@@ -42,11 +42,6 @@ import com.example.littlelemon.ui.theme.LittleLemonTextStyle
 @Composable
 fun Onboarding(context: Context, navController: NavHostController) {
 
-    // Section spaces
-    val logoVerticalMargin = 24.dp
-    val imageHeight = 48.dp
-    val textSectionHeight = logoVerticalMargin + imageHeight * 2
-
     // TextField values
     var firstname = remember { mutableStateOf("") }
     var lastname = remember { mutableStateOf("") }
@@ -58,21 +53,11 @@ fun Onboarding(context: Context, navController: NavHostController) {
     var buttonColor = if (isPressed.value) LittleLemonColor.Orange else LittleLemonColor.Yellow
     var buttonTextColor = if (isPressed.value) LittleLemonColor.Cloud else LittleLemonColor.Charcoal
 
-
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-
-        Spacer(modifier = Modifier.height(logoVerticalMargin))
-        Image(
-            painter = painterResource(R.drawable.logo),
-            contentDescription = "App logo",
-            contentScale = ContentScale.FillHeight,
-            modifier = Modifier.height(imageHeight)
-        )
-        Spacer(modifier = Modifier.height(logoVerticalMargin))
 
         Text(
             text = "Let's get to know you",
@@ -82,7 +67,7 @@ fun Onboarding(context: Context, navController: NavHostController) {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(textSectionHeight)
+                .height(96.dp)
                 .background(LittleLemonColor.Green)
                 .wrapContentHeight(Alignment.CenterVertically)
         )
@@ -99,7 +84,7 @@ fun Onboarding(context: Context, navController: NavHostController) {
                 textAlign = TextAlign.Left,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(textSectionHeight)
+                    .height(96.dp)
                     .wrapContentHeight(Alignment.CenterVertically)
             )
 
@@ -164,8 +149,6 @@ fun Onboarding(context: Context, navController: NavHostController) {
 
         }
     }
-
-
 }
 
 
@@ -190,8 +173,8 @@ fun RegisterTextField(
             textStyle = LittleLemonTextStyle.paragraphText,
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
                 focusedIndicatorColor = LittleLemonColor.Cloud,
                 unfocusedIndicatorColor = LittleLemonColor.Cloud,
             ),
