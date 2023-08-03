@@ -60,7 +60,6 @@ import com.example.littlelemon.ui.theme.LittleLemonTextStyle
 fun Home(menuItems: List<MenuItemRoom>) {
     val modifier = Modifier.padding(horizontal = 12.dp)
 
-    // TODO: Set filterBy by checked values of filter buttons
     val filterCategory = remember { mutableStateOf("") }
     var shownMenuItems: List<MenuItemRoom> = when(filterCategory.value) {
         "starters" -> menuItems.filter { it.category == "starters" }
