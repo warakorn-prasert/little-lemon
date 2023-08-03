@@ -3,5 +3,7 @@
 
     <string name="hero_title">Little Lemon</string>
     <string name="hero_subtitle">Chicago</string>
-    <string name="hero_detail">We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</string>
+    <string name="hero_detail">We are a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</string>
+
+    <string name="order_for_delivery">ORDER FOR DELIVERY!</string>
 </resources>

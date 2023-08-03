@@ -38,7 +38,6 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 import com.example.littlelemon.ui.theme.LittleLemonTextStyle
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile(context: Context, navController: NavController) {
     val sharedPreferences =

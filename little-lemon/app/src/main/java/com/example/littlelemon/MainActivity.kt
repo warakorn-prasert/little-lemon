@@ -50,22 +50,12 @@ class MainActivity : ComponentActivity() {
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database").build()
     }
 
-    private suspend fun fetchMenu(): List<MenuItemNetwork> {
-        val url =
-            "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
-        val response = httpClient.get(url).body<MenuNetwork>()
-
-        return response.menu
-    }
-
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var menuNetwork: List<MenuItemNetwork>
-
         setContent {
-//            val databaseMenuItems by database.menuItemDao().getAll().observeAsState(emptyList())
+            val menuItems by database.menuItemDao().getAll().observeAsState(emptyList())
 
             LittleLemonTheme {
                 // A surface container using the 'background' color from the theme
@@ -87,7 +77,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .wrapContentHeight()
-                                    .padding(vertical = 24.dp)
+                                    .padding(vertical = 8.dp)
                             )
                         },
                         content = { paddingValues ->
@@ -95,7 +85,7 @@ class MainActivity : ComponentActivity() {
                             val mainActivityContext = this
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 Spacer(modifier = Modifier.height(paddingValues.calculateTopPadding()))
-                                Navigation(mainActivityContext, navController)
+                                Navigation(mainActivityContext, navController, menuItems)
                             }
                         },
                         modifier = Modifier.fillMaxSize()
@@ -104,11 +94,24 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            if (database.menuItemDao().isEmpty()) {
-////                menuNetwork = fetchMenu()
-//            }
-//        }
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (database.menuItemDao().isEmpty()) {
+                saveMenuToDatabase(fetchMenu())
+            }
+        }
+    }
+
+    private suspend fun fetchMenu(): List<MenuItemNetwork> {
+        val url =
+            "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
+        val response = httpClient.get(url).body<MenuNetwork>()
+
+        return response.menu
+    }
+
+    private fun saveMenuToDatabase(menuItemsNetwork: List<MenuItemNetwork>) {
+        val menuItemsRoom = menuItemsNetwork.map { it.toMenuItemRoom() }
+        database.menuItemDao().insertAll(*menuItemsRoom.toTypedArray())
     }
 }
 
