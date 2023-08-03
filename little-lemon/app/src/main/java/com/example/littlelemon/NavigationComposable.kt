@@ -15,7 +15,8 @@ import androidx.navigation.navArgument
 @Composable
 fun Navigation(
     context: Context,
-    navController: NavHostController
+    navController: NavHostController,
+    menuItems: List<MenuItemRoom>
 ) {
     val sharedPreferences = context.getSharedPreferences("LittleLemon.prefs", Context.MODE_PRIVATE)
     var isLogin = sharedPreferences.getBoolean("isLogin", false)
@@ -26,7 +27,7 @@ fun Navigation(
             Onboarding(context, navController)
         }
         composable(Home.route) {
-            Profile(context, navController)
+            Home(menuItems)
         }
         composable(Profile.route) {
             Profile(context, navController)

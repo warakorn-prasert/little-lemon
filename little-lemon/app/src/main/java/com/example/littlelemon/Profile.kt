@@ -38,98 +38,75 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 import com.example.littlelemon.ui.theme.LittleLemonTextStyle
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile(context: Context, navController: NavController) {
-    Scaffold(
-//        scaffoldState = scaffoldState,
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Image(
-                        painter = painterResource(R.drawable.logo),
-                        contentDescription = "App logo",
-                        contentScale = ContentScale.FillHeight,
-                        modifier = Modifier.height(48.dp)
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(vertical = 24.dp)
+    val sharedPreferences =
+        context.getSharedPreferences("LittleLemon.prefs", Context.MODE_PRIVATE)
+    val firstname = sharedPreferences.getString("First name", "") ?: ""
+    val lastname = sharedPreferences.getString("Last name", "") ?: ""
+    val email = sharedPreferences.getString("Email", "") ?: ""
+
+    var interactionSource = remember { MutableInteractionSource() }
+    var isPressed = interactionSource.collectIsPressedAsState()
+    var buttonColor = if (isPressed.value) LittleLemonColor.Orange else LittleLemonColor.Yellow
+    var buttonTextColor = if (isPressed.value) LittleLemonColor.Cloud else LittleLemonColor.Charcoal
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp)
+    ) {
+        Text(
+            text = "Personal information",
+            color = LittleLemonColor.Charcoal,
+            style = LittleLemonTextStyle.cardTitle,
+            textAlign = TextAlign.Left,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .wrapContentHeight(Alignment.CenterVertically)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+        FrozenTextField(
+            title = "First name",
+            value = firstname
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+        FrozenTextField(
+            title = "Last name",
+            value = lastname
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+        FrozenTextField(
+            title = "Email",
+            value = email
+        )
+
+        Spacer(modifier = Modifier.height(48.dp))
+
+        OutlinedButton(
+            onClick = { navController.navigate(Onboarding.route) },
+            interactionSource = interactionSource,
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(1.dp, LittleLemonColor.Orange),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = buttonColor,
+                contentColor = buttonTextColor
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+        ) {
+            Text(
+                text = "Log out",
+                style = LittleLemonTextStyle.leadText
             )
-        },
-        content = { paddingValues ->
-            val sharedPreferences =
-                context.getSharedPreferences("LittleLemon.prefs", Context.MODE_PRIVATE)
-            val firstname = sharedPreferences.getString("First name", "") ?: ""
-            val lastname = sharedPreferences.getString("Last name", "") ?: ""
-            val email = sharedPreferences.getString("Email name", "") ?: ""
-
-            var interactionSource = remember { MutableInteractionSource() }
-            var isPressed = interactionSource.collectIsPressedAsState()
-            var buttonColor = if (isPressed.value) LittleLemonColor.Orange else LittleLemonColor.Yellow
-            var buttonTextColor = if (isPressed.value) LittleLemonColor.Cloud else LittleLemonColor.Charcoal
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp)
-            ) {
-                Spacer(modifier = Modifier.height(paddingValues.calculateTopPadding()))
-                Text(
-                    text = "Personal information",
-                    color = LittleLemonColor.Charcoal,
-                    style = LittleLemonTextStyle.cardTitle,
-                    textAlign = TextAlign.Left,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .wrapContentHeight(Alignment.CenterVertically)
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-                FrozenTextField(
-                    title = "First name",
-                    value = firstname
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-                FrozenTextField(
-                    title = "Last name",
-                    value = lastname
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-                FrozenTextField(
-                    title = "Email",
-                    value = email
-                )
-
-                Spacer(modifier = Modifier.height(48.dp))
-
-                OutlinedButton(
-                    onClick = { navController.navigate(Onboarding.route) },
-                    interactionSource = interactionSource,
-                    shape = RoundedCornerShape(8.dp),
-                    border = BorderStroke(1.dp, LittleLemonColor.Orange),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = buttonColor,
-                        contentColor = buttonTextColor
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                ) {
-                    Text(
-                        text = "Log out",
-                        style = LittleLemonTextStyle.leadText
-                    )
-                }
-
-            }
         }
-    )
+
+    }
 }
 
 
